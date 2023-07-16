@@ -1,6 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Data.SqlClient;
 namespace DatabaseBackupper
 {
     class Program
@@ -19,6 +17,7 @@ namespace DatabaseBackupper
                 connection.Open();
                 SqlCommand sqlCommand= connection.CreateCommand();
                 sqlCommand.CommandText = $"BACKUP DATABASE {connection.Database} TO DISK='{databaseBackupPath}' WITH INIT";
+                sqlCommand.CommandTimeout = 3600; // This will set the timeout to 1 hour
                 sqlCommand.ExecuteNonQuery();
             }
             ///upload to google drive
