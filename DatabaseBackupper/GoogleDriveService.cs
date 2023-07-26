@@ -1,6 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
+using Google.Apis.Util;
 using Google.Apis.Util.Store;
 
 namespace DatabaseBackupper
@@ -23,6 +24,19 @@ namespace DatabaseBackupper
                     "user",
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;
+            }
+
+            // Added a refresh logic if access token has expired
+            if (credential.Token.IsExpired(SystemClock.Default))
+            {
+                if (!string.IsNullOrEmpty(credential.Token.RefreshToken))
+                {
+                    credential.RefreshTokenAsync(CancellationToken.None).Wait();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Refresh token is missing");
+                }
             }
 
             // Create Drive API service.
