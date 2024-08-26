@@ -25,9 +25,9 @@ namespace DatabaseBackupper
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;
             }
-
             // Added a refresh logic if access token has expired
-            if (credential.Token.IsExpired(SystemClock.Default))
+            
+            if (credential.Token.IsStale == false)
             {
                 if (!string.IsNullOrEmpty(credential.Token.RefreshToken))
                 {
@@ -66,6 +66,7 @@ namespace DatabaseBackupper
                     // If file exists, delete the file.
                     var deleteRequest = service.Files.Delete(existingFile.Id);
                     deleteRequest.Execute();
+                    Thread.Sleep(60_000);
                 }
 
                 // Create a new file.

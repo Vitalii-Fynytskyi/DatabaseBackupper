@@ -19,7 +19,7 @@ namespace DatabaseBackupper
             {
                 connection.Open();
                 SqlCommand sqlCommand = connection.CreateCommand();
-                sqlCommand.CommandText = $"BACKUP DATABASE {connection.Database} TO DISK='{databaseBackupPath}' WITH INIT";
+                sqlCommand.CommandText = $"BACKUP DATABASE {connection.Database} TO DISK='{databaseBackupPath}' WITH INIT, COMPRESSION";
                 sqlCommand.CommandTimeout = 3600; // This will set the timeout to 1 hour
                 sqlCommand.ExecuteNonQuery();
             }
