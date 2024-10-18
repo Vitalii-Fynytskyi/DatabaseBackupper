@@ -27,7 +27,7 @@ namespace DatabaseBackupper
             }
             // Added a refresh logic if access token has expired
             
-            if (credential.Token.IsStale == false)
+            if (credential.Token.IsStale == true)
             {
                 if (!string.IsNullOrEmpty(credential.Token.RefreshToken))
                 {
